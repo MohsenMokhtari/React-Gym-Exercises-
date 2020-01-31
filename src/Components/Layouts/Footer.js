@@ -1,27 +1,47 @@
-import React from 'react'
-import { Paper, Tabs } from 'material-ui'
-import { Tab } from 'material-ui/Tabs'
+import React, { Component } from 'react'
+import { compose } from 'recompose'
+import { withWidth, AppBar, Tabs, Tab } from '@material-ui/core'
+import { withContext } from '../../context'
 
-export default ({ muscles, category, onSelect }) => {
-  const index = category
-    ? muscles.findIndex(group => group === category) + 1
-    : 0
+class Footer extends Component {
+  muscles = this.getMuscles()
 
-  const onIndexSelect = (e, index) =>
-    onSelect(index === 0 ? '' : muscles[index - 1])
+  getMuscles () {
+    return [ '', ...this.props.muscles ]
+  }
 
-  return <Paper>
-    <Tabs
-      value={index}
-      onChange={onIndexSelect}
-      indicatorColor="primary"
-      textColor="primary"
-      centered
-    >
-      <Tab label="All" />
-      {muscles.map(group =>
-        <Tab key={group} label={group} />
-      )}
-    </Tabs>
-  </Paper>
+  onIndexSelect = (e, index) => {
+    this.props.onCategorySelect(this.muscles[index])
+  }
+
+  getIndex = () => {
+    return this.muscles.indexOf(this.props.category)
+  }
+
+  render () {
+    const { width } = this.props
+    const isMobile = width === 'xs'
+
+    return (
+      <AppBar position='static'>
+        <Tabs
+          value={this.getIndex()}
+          onChange={this.onIndexSelect}
+          indicatorColor='secondary'
+          textColor='secondary'
+          variant={isMobile ? 'scrollable' : 'standard'}
+          centered={!isMobile}
+        >
+          {this.muscles.map(group =>
+            <Tab key={group} label={group || 'All'} />
+          )}
+        </Tabs>
+      </AppBar>
+    )
+  }
 }
+
+export default compose(
+  withContext,
+  withWidth()
+)(Footer)
