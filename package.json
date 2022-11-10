@@ -29,7 +29,7 @@
     "babel-plugin-import": "^1.13.0",
     "html-webpack-plugin": "^4.0.0-beta.11",
     "rimraf": "^3.0.0",
-    "serve": "^11.2.0",
+    "serve": "^14.1.1",
     "standard": "^14.3.1",
     "webpack": "^4.41.4",
     "webpack-bundle-analyzer": "^3.6.0",
